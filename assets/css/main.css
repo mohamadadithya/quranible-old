@@ -1,9 +1,9 @@
 /* Copyright 2021 by Mohamad Adithya */
 @font-face {
 	font-family: 'LPMQ';
-	src: url('./LPMQ.ttf');
-	src: url('./LPMQ.ttf') format('ttf'),
-	     url('./LPMQ.ttf') format('truetype');
+	src: url('../LPMQ.ttf');
+	src: url('../LPMQ.ttf') format('ttf'),
+	     url('../LPMQ.ttf') format('truetype');
 }
 
 :root {
