@@ -1,14 +1,29 @@
 /* Copyright 2021 by Mohamad Adithya */
 @font-face {
 	font-family: 'LPMQ';
-	src: url('../LPMQ.ttf');
-	src: url('../LPMQ.ttf') format('ttf'),
-	     url('../LPMQ.ttf') format('truetype');
+	src: url('../fonts/LPMQ.ttf');
+	src: url('../fonts/LPMQ.ttf') format('ttf'),
+	     url('../fonts/LPMQ.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins-Regular';
+	src: url('../fonts/Poppins-Regular.ttf');
+	src: url('../fonts/Poppins-Regular.ttf') format('ttf'),
+	     url('../fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins-SemiBold';
+	src: url('../fonts/Poppins-SemiBold.ttf');
+	src: url('../fonts/Poppins-SemiBold.ttf') format('ttf'),
+	     url('../fonts/Poppins-SemiBold.ttf') format('truetype');
 }
 
 :root {
   font-size: 14px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins-Regular', sans-serif;
+  --semiBoldFont: 'Poppins-SemiBold', sans-serif;
   --primaryColor: #343A40;
   --arabFont: 'LPMQ';
 }
@@ -42,7 +57,7 @@ body {
 }
 
 .navigation .logo {
-  font-weight: 600;
+  font-family: var(--semiBoldFont);
 }
 
 .surahs .surah {
