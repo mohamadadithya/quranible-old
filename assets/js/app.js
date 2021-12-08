@@ -5,8 +5,25 @@ const loader = document.querySelector('.loader')
 const surahPage = document.querySelector('.surah-page')
 const versesContainer = document.querySelector('.verses')
 const audioEl = document.querySelector('.audio')
+const themeToggle = document.querySelector('.check-toggle')
 
-const getSurahs = async() => {
+let darkTheme = false
+
+// Check Theme
+const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null
+
+if(currentTheme) {
+  document.documentElement.setAttribute('data-theme', currentTheme)
+
+  if(currentTheme === 'dark') {
+    const toggleIcon = themeToggle.previousElementSibling
+    themeToggle.checked = true
+    toggleIcon.classList.replace('fa-moon', 'fa-sun')
+    darkTheme = true
+  }
+}
+
+const getSurahs = async () => {
   const response = await fetch(`https://api.quran.sutanlab.id/surah/`)
   showLoader()
   const result = await response.json()
@@ -109,7 +126,11 @@ const playAudios = (verses, el) => {
 const closeSurah = () => {
   document.body.style.overflowY = 'auto'
   surahPage.classList.remove('active')
-  mainNav.innerHTML = `<li class="logo">Quranible</li>`
+  mainNav.innerHTML = `<li class="logo">Quranible</li>
+  <li class="theme-toggle">
+  <label for="check-toggle" class="far ${darkTheme === true ? 'fa-sun' : 'fa-moon'} toggle"></label>
+  <input type="checkbox" class="check-toggle" id="check-toggle" onchange="setTheme(this)">
+  </li>`
   setTimeout(() => {
     versesContainer.innerHTML = ''
   }, 500);
@@ -120,6 +141,21 @@ const changeAudioToggles = () => {
   toggles.forEach((toggle) => {
     toggle.classList.replace('fa-stop', 'fa-play')
   })
+}
+
+const setTheme = (el) => {
+  const toggleIcon = el.previousElementSibling
+  if(el.checked) {
+    toggleIcon.classList.replace('fa-moon', 'fa-sun')
+    darkTheme = true
+    document.documentElement.setAttribute('data-theme', 'dark')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    toggleIcon.classList.replace('fa-sun', 'fa-moon')
+    darkTheme = false
+    document.documentElement.setAttribute('data-theme', 'light')
+    localStorage.setItem('theme', 'light')
+  }
 }
 
 const showLoader = () => {
