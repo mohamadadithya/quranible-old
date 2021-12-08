@@ -71,7 +71,7 @@ body {
   -o-transition: .3s;
   transition: .3s;
   margin-bottom: 1rem;
-  cursor: pointer;
+  cursor: auto;
 }
 
 .surahs .surah:active {
@@ -251,6 +251,10 @@ footer {
     -ms-grid-columns: 1fr 1rem 1fr;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+  }
+
+  .surahs .surah {
+    cursor: pointer;
   }
 }
 
