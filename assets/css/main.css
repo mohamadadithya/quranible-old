@@ -190,6 +190,7 @@ footer {
   margin-top: 30px;
   background-color: var(--accentColor);
   color: white;
+  display: none;
 }
 
 .loader {

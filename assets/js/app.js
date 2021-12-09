@@ -1,4 +1,13 @@
 /* Copyright 2021 by Mohamad Adithya */
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker
+    .register('/serviceWorker.js')
+    .then(res => console.log('Service worker registered'))
+    .catch(err => console.log('Service worker not registered', err))
+  })
+}
+
 const mainNav = document.querySelector('.main-nav')
 const surahsContainer = document.querySelector('.surahs .container')
 const loader = document.querySelector('.loader')
@@ -6,6 +15,7 @@ const surahPage = document.querySelector('.surah-page')
 const versesContainer = document.querySelector('.verses')
 const audioEl = document.querySelector('.audio')
 const themeToggle = document.querySelector('.check-toggle')
+const footer = document.querySelector('footer')
 
 let darkTheme = false
 
@@ -30,6 +40,7 @@ const getSurahs = async () => {
   const surahs = await result.data
   showSurahs(surahs)
   hideLoader()
+  footer.style.display = 'block'
 }
 
 getSurahs()
