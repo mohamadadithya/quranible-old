@@ -6,7 +6,7 @@ const assets = [
     '/assets/js/app.min.js',
     '/assets/fonts/LPMQ.ttf',
     '/assets/fonts/Poppins-Regular.ttf',
-    '/assets/fonts/Poppins-SemiBold'
+    '/assets/fonts/Poppins-SemiBold.ttf'
 ]
 
 self.addEventListener('install', installEvent => {
