@@ -269,6 +269,22 @@ footer {
   }
 }
 
+.offline {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background-color: var(--bodyColor);
+  color: var(--textcolor);
+  display: none;
+}
+
+.offline .copy {
+  font-size: 2rem;
+}
+
 /* Tablet or Higher View */
 @media (min-width: 768px) {
   .surahs .container {

@@ -1,4 +1,14 @@
 /* Copyright 2021 by Mohamad Adithya */
+const mainNav = document.querySelector('.main-nav')
+const surahsContainer = document.querySelector('.surahs .container')
+const loader = document.querySelector('.loader')
+const surahPage = document.querySelector('.surah-page')
+const versesContainer = document.querySelector('.verses')
+const audioEl = document.querySelector('.audio')
+const themeToggle = document.querySelector('.check-toggle')
+const footer = document.querySelector('footer')
+const offlineSection = document.querySelector('.offline')
+
 if('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker
@@ -8,14 +18,9 @@ if('serviceWorker' in navigator) {
   })
 }
 
-const mainNav = document.querySelector('.main-nav')
-const surahsContainer = document.querySelector('.surahs .container')
-const loader = document.querySelector('.loader')
-const surahPage = document.querySelector('.surah-page')
-const versesContainer = document.querySelector('.verses')
-const audioEl = document.querySelector('.audio')
-const themeToggle = document.querySelector('.check-toggle')
-const footer = document.querySelector('footer')
+window.addEventListener('offline', () => {
+  offlineSection.style.display = 'grid'
+})
 
 let darkTheme = false
 
