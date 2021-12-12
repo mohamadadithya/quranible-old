@@ -19,7 +19,18 @@ if('serviceWorker' in navigator) {
 }
 
 window.addEventListener('offline', () => {
-  offlineSection.style.display = 'grid'
+  if(!navigator.onLine) {
+    offlineSection.style.display = 'grid'
+  } else {
+    offlineSection.style.display = 'none'
+  }
+})
+
+// Back Event
+window.addEventListener('hashchange', (e) => {
+  if(e.oldURL.length > e.newURL.length) {
+    closeSurah()
+  }
 })
 
 let darkTheme = false
@@ -52,13 +63,13 @@ getSurahs()
 
 const showSurahs = (surah) => {
   for (let i in surah) {
-    surahsContainer.innerHTML += `<div class="surah flex shadow" onclick="showSurah(${surah[i].number})">
+    surahsContainer.innerHTML += `<a href="#${surah[i].name.transliteration.id.toLowerCase()}" class="surah flex shadow" onclick="showSurah(${surah[i].number})">
              <p class="number">${surah[i].number}</p>
              <div>
               <h3 class="name">${surah[i].name.transliteration.id}</h3>
                <p class="desc text-gray">${surah[i].name.translation.id} • ${surah[i].numberOfVerses} ayat</p>
              </div>
-           </div>`
+           </a>`
   }
 }
 

@@ -55,6 +55,7 @@
   font-family: inherit;
   font-size: inherit;
   list-style: none;
+  text-decoration: none;
 }
 
 body {
@@ -93,7 +94,7 @@ body {
   -o-transition: .3s;
   transition: .3s;
   margin-bottom: 1rem;
-  cursor: auto;
+  cursor: none;
   background-color: var(--cardColor);
 }
 
