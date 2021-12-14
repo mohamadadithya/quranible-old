@@ -59,7 +59,6 @@
 }
 
 body {
-  padding-top: 80px;
   background-color: var(--bodyColor);
   transition: .3s all ease;
 }
@@ -83,11 +82,54 @@ body {
   display: none;
 }
 
+.navigation .sidebar {
+  background-color: var(--accentColor);
+  width: 60%;
+  z-index: -2;
+  padding-top: 4em;
+  transform: translateX(-100%);
+  transition: .4s ease;
+}
+
+.navigation .sidebar .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 1rem;
+}
+
+.navigation .sidebar .menu-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
+.navigation .sidebar .link {
+  display: inline-block;
+  color: white;
+  margin-bottom: 1em;
+}
+
+.navigation .sidebar footer {
+  font-size: .8rem;
+}
+
+.navigation .sidebar footer span {
+  font-weight: 600;
+}
+
+.navigation .sidebar.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .surahs .container {
   display: block;
 }
 
 .surahs .surah {
+  background-color: var(--cardColor);
   border-radius: 1rem;
   padding: 16px;
   -webkit-transition: .3s;
@@ -95,7 +137,6 @@ body {
   transition: .3s;
   margin-bottom: 1rem;
   cursor: none;
-  background-color: var(--cardColor);
 }
 
 .surahs .surah:active {
@@ -124,14 +165,9 @@ body {
 }
 
 .surah-page {
-  position: fixed;
-  top: 0;
   width: 100%;
-  height: 100%;
   overflow-y: scroll;
-  background-color: var(--bodyColor);
   z-index: 2;
-  padding-top: 80px;
   -webkit-transform: translateX(100%);
   -ms-transform: translateX(100%);
   transform: translateX(100%);
@@ -139,6 +175,7 @@ body {
   -o-transition: .4s ease;
   transition: .4s ease;
   color: var(--textcolor);
+  background-color: var(--bodyColor);
 }
 
 .surah-page.active {
@@ -151,7 +188,6 @@ body {
   font-size: 2.3rem;
   text-align: center;
   margin-bottom: 35px;
-  font-family: var(--arabFont);
 }
 
 .surah-page .verse {
@@ -167,9 +203,6 @@ body {
 .surah-page .verse .arab {
   margin-bottom: 1rem;
   text-align: right;
-  font-size: 2rem;
-  font-family: var(--arabFont);
-  line-height: 2.3;
 }
 
 .surah-page .verse .latin {
@@ -181,17 +214,90 @@ body {
   margin-top: 12px;
 }
 
+.daily-prayer-page,
+.adzan-page {
+  background-color: var(--bodyColor);
+  width: 100%;
+  transform: translateX(100%);
+  transition: .4s ease;
+  overflow-y: scroll;
+  padding-bottom: 1em;
+}
+
+.adzan-page.active,
+.daily-prayer-page.active {
+  transform: translateX(0);
+}
+
+.daily-prayer-page .container {
+  display: block;
+}
+
+.daily-prayer-page .card {
+  background-color: var(--cardColor);
+  color: var(--textcolor);
+  padding: 1.8em;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.daily-prayer-page .card .name {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.daily-prayer-page .card .arab {
+  text-align: right;
+  margin-bottom: .8rem;
+}
+
+.daily-prayer-page .card .means {
+  color: var(--textGray);
+  margin-top: .6rem;
+}
+
+.adzan-page {
+  color: var(--textcolor);
+}
+
+.adzan-page header {
+  background-color: var(--cardColor);
+  padding: 2em;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.adzan-page header .name {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.adzan-page header .time-icon {
+  font-size: 4rem;
+  margin-right: 1em;
+}
+
+.adzan-page header .time {
+  font-size: 1.5rem;
+}
+
+.adzan-page .time-list .card {
+  background-color: var(--cardColor);
+  padding: 1rem;
+  border-radius: 1rem;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.adzan-page .time-list .card .name {
+  font-weight: 600;
+  margin-left: 10px;
+}
+
 .toggle,
 .fa-chevron-left {
   cursor: pointer;
-}
-
-footer {
-  padding: 16px 0;
-  margin-top: 30px;
-  background-color: var(--accentColor);
-  color: white;
-  display: none;
 }
 
 .loader {
@@ -271,12 +377,9 @@ footer {
 }
 
 .offline {
-  position: fixed;
-  top: 0;
   width: 100%;
   display: grid;
   place-items: center;
-  height: 100%;
   background-color: var(--bodyColor);
   color: var(--textcolor);
   display: none;
@@ -288,10 +391,20 @@ footer {
 
 /* Tablet or Higher View */
 @media (min-width: 768px) {
+  .navigation .sidebar {
+    width: 30%;
+  }
+
   .surahs .container {
     display: -ms-grid;
     display: grid;
     -ms-grid-columns: 1fr 1rem 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .daily-prayer-page .container {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
@@ -336,6 +449,26 @@ footer {
 
 .text-gray {
   color: var(--textGray);
+}
+
+.text-white {
+  color: white;
+}
+
+.fixed-set {
+  position: fixed;
+  top: 0;
+  height: 100%;
+}
+
+.padding-set {
+  padding-top: 80px;
+}
+
+.arab {
+  font-family: var(--arabFont);
+  font-size: 2rem;
+  line-height: 2.3;
 }
 
 /* Copyright 2021 by Mohamad Adithya */

@@ -16,7 +16,7 @@
    <meta name="author" content="Mohamad Adithya">
    <meta name="google-site-verification" content="m4k8dvzsRr2cACjrTnp64lG6FjYsPqjL6ciL-xETHrU" />
    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon" />
-   <link rel="stylesheet" href="/assets/css/main.min.css" type="text/css" media="all" />
+   <link rel="stylesheet" href="/assets/css/main.css" type="text/css" media="all" />
    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet"
       type="text/css" />
    <!-- PWA -->
@@ -30,14 +30,20 @@
    <meta name="theme-color" content="#353B41" />
    <!-- Hotjar Tracking Code for https://quranible.netlify.app -->
    <script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:2744016,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+      (function (h, o, t, j, a, r) {
+         h.hj = h.hj || function () {
+            (h.hj.q = h.hj.q || []).push(arguments)
+         };
+         h._hjSettings = {
+            hjid: 2744016,
+            hjsv: 6
+         };
+         a = o.getElementsByTagName('head')[0];
+         r = o.createElement('script');
+         r.async = 1;
+         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+         a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
    </script>
 </head>
 
@@ -45,6 +51,7 @@
    <nav class="navigation shadow">
       <div class="container">
          <ul class="flex between align-center main-nav">
+            <li class="menu toggle" onclick="showSidebar()"><i class="far fa-bars"></i></li>
             <li class="logo">Quranible</li>
             <li class="theme-toggle">
                <label for="check-toggle" class="far fa-moon toggle"></label>
@@ -52,19 +59,51 @@
             </li>
          </ul>
       </div>
+      <aside class="sidebar fixed-set">
+         <div class="container">
+            <ul>
+               <li class="menu-text">Menu</li>
+               <li>
+                  <a href="#" class="link">Al Qur'an</a>
+               </li>
+               <li>
+                  <a href="#doa-harian" class="link">Doa-Doa Harian</a>
+               </li>
+               <li>
+                  <a href="#adzan" class="link">Waktu Sholat</a>
+               </li>
+            </ul>
+            <footer>&copy; 2021 <span>Mohamad Adithya</span></footer>
+         </div>
+      </aside>
    </nav>
-   <section class="surahs">
+   <section class="surahs padding-set">
       <div class="container"></div>
    </section>
-   <footer>
-      <div class="container">
-         <p>&copy; 2021 by Mohamad Adithya</p>
-      </div>
-   </footer>
-   <section class="surah-page">
+   <section class="surah-page page fixed-set padding-set">
       <div class="container">
          <h1 class="bismillah arab">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم</h1>
          <div class="verses"></div>
+      </div>
+   </section>
+   <section class="adzan-page page fixed-set padding-set">
+      <div class="container">
+         <header class="shadow">
+            <h2 class="name"></h2>
+            <div class="flex align-center">
+               <i class="far fa-fw time-icon"></i>
+               <span>
+                  <p class="time"></p>
+                  <p class="date text-gray"></p>
+               </span>
+            </div>
+         </header>
+         <div class="time-list">
+         </div>
+      </div>
+   </section>
+   <section class="daily-prayer-page page fixed-set padding-set">
+      <div class="container">
       </div>
    </section>
    <div class="loader">
@@ -73,14 +112,14 @@
          <div></div>
       </div>
    </div>
-   <section class="offline">
+   <section class="offline fixed-set">
       <div class="container">
          <h1 class="copy">You're Offline</h1>
          <p>Sorry, your network is unavailable. Check your data or wifi connection to access this app.</p>
       </div>
    </section>
    <audio class="audio"></audio>
-   <script src="/assets/js/app.min.js" type="text/javascript" charset="utf-8"></script>
+   <script src="/assets/js/app.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 </html>
