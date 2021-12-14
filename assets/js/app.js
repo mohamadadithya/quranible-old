@@ -76,7 +76,7 @@ const showAdzan = (adzan) => {
     shubuh: {
       name: 'Shubuh',
       time: adzan.datetime[0].times.Fajr,
-      icon: 'fa-sunset'
+      icon: 'fa-sunrise'
     },
     dhuhr: {
       name: 'Dzuhur',
