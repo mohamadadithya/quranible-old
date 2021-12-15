@@ -25,11 +25,12 @@ if('serviceWorker' in navigator) {
 }
 
 sidebarLinks.forEach((link, index) => {
-  if(index !== 0) {
+    link.addEventListener('click', () => {
+      sidebar.classList.remove('active')
+    })
     if(index === 1) {
       link.addEventListener('click', async () => {
         dailyPrayerPage.classList.add('active')
-        sidebar.classList.remove('active')
         showLoader()
         const response = await fetch('https://api.jsonbin.io/b/61b7de1662ed886f915faabc')
         const result = await response.json()
@@ -37,69 +38,39 @@ sidebarLinks.forEach((link, index) => {
         showDailyPrayer(data)
         hideLoader()
       })
-    } else {
+    } else if(index === 2) {
       link.addEventListener('click', async () => {
         adzanPage.classList.add('active')
-        sidebar.classList.remove('active')
         showLoader()
-        getLatLong()
+        const response = await fetch('https://api.techniknews.net/ipgeo/')
+        const result = await response.json()
+        const location = await result
+        getLocation(location.city)
       })
     }
-  }
 })
 
-const getLatLong = () => {
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(getElevation, getLatLongError)
-  } else {
-    alert('Geolocation is not supported by this browser.')
-  }
+const getLocation = async (city) => {
+  const response = await fetch(`https://api.banghasan.com/sholat/format/json/kota/nama/${city}`)
+  const result = await response.json()
+  const data = await result
+  const locationId = parseInt(data.kota[0].id)
+  getAdzan(locationId, city)
 }
 
-const getLatLongError = (error) => {
-  const adzanHeader = adzanPage.querySelector('header')
-  switch(error.code) {
-    case error.PERMISSION_DENIED:
-      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
-      <p>Allow this site to access your location and reload.</p>`
-      break;
-    case error.POSITION_UNAVAILABLE:
-      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
-      <p>Location information is unavailable.</p>`
-      break;
-    case error.TIMEOUT:
-      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
-      <p>Request timed out.</p>`
-      break;
-    case error.UNKNOWN_ERROR:
-      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
-      <p>An unknown error occurred.</p>`
-      break;
-  }
-  hideLoader()
-}
-
-const getAdzan = async (location) => {
+const getAdzan = async (locationId, city) => {
   showLoader()
-  const response = await fetch(`https://api.pray.zone/v2/times/today.json?longitude=${location.longitude}&latitude=${location.latitude}&elevation=${location.elevation}`)
+  const date = new Date().toLocaleDateString('en-CA')
+  const response = await fetch(`https://api.banghasan.com/sholat/format/json/jadwal/kota/${locationId}/tanggal/${date}`)
   const result = await response.json()
   const data = await result
-  showAdzan(data.results)
+  showAdzan(data.jadwal.data, city)
   hideLoader()
 }
 
-const getElevation = async (position) => {
-  let latitude = position.coords.latitude
-  let longitude = position.coords.longitude
-
-  const response = await fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${latitude},${longitude}`)
-  const result = await response.json()
-  const data = await result
-  getAdzan(data.results[0])
-}
-
-const showAdzan = (adzan) => {
+const showAdzan = (adzan, city) => {
   const elements = {
+    location: adzanPage.querySelector('.location'),
     name: adzanPage.querySelector('.name'),
     time: adzanPage.querySelector('.time'),
     timeIcon: adzanPage.querySelector('.time-icon'),
@@ -108,32 +79,34 @@ const showAdzan = (adzan) => {
   document.body.style.overflowY = 'hidden'
   mainNav.innerHTML = `
   <li onclick="closePage()"><a href="#0" class="far fa-chevron-left text-white"></a></li>
-  <li class="logo"><i class="far fa-map-marker-alt"></i> ${adzan.location.timezone}, ${adzan.location.country_code}</li>
+  <li class="logo">Waktu Sholat</li>
   `
+  elements.location.innerHTML = `<i class="far fa-map-marker-alt"></i> ${city}`
+
   const adzanTimes = {
     shubuh: {
       name: 'Shubuh',
-      time: adzan.datetime[0].times.Imsak,
+      time: adzan.subuh,
       icon: 'fa-sunrise'
     },
     dhuhr: {
       name: 'Dzuhur',
-      time: adzan.datetime[0].times.Dhuhr,
+      time: adzan.dzuhur,
       icon: 'fa-sun'
     },
     ashar: {
       name: 'Ashar',
-      time: adzan.datetime[0].times.Asr,
+      time: adzan.ashar,
       icon: 'fa-sun'
     },
     maghrib: {
       name: 'Maghrib',
-      time: adzan.datetime[0].times.Sunset,
+      time: adzan.maghrib,
       icon: 'fa-sunset'
     },
     isya: {
       name: 'Isya',
-      time: adzan.datetime[0].times.Isha,
+      time: adzan.isya,
       icon: 'fa-moon'
     }
   }
@@ -259,6 +232,7 @@ const showSurahs = (surah) => {
 }
 
 const showSurah = (surahNumber) => {
+  sidebar.classList.remove('active')
   showLoader()
   fetch(`https://api.quran.sutanlab.id/surah/${surahNumber}`)
     .then(res => res.json())
