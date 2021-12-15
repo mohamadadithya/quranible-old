@@ -42,22 +42,61 @@ sidebarLinks.forEach((link, index) => {
         adzanPage.classList.add('active')
         sidebar.classList.remove('active')
         showLoader()
-        const response = await fetch('https://api.techniknews.net/ipgeo/')
-        const result = await response.json()
-        const data = await result
-        getAdzan(data.city)
-        hideLoader()
+        getLatLong()
       })
     }
   }
 })
 
-const getAdzan = async (city) => {
+const getLatLong = () => {
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getElevation, getLatLongError)
+  } else {
+    alert('Geolocation is not supported by this browser.')
+  }
+}
+
+const getLatLongError = (error) => {
+  const adzanHeader = adzanPage.querySelector('header')
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
+      <p>Allow this site to access your location and reload.</p>`
+      break;
+    case error.POSITION_UNAVAILABLE:
+      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
+      <p>Location information is unavailable.</p>`
+      break;
+    case error.TIMEOUT:
+      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
+      <p>Request timed out.</p>`
+      break;
+    case error.UNKNOWN_ERROR:
+      adzanHeader.innerHTML = `<h1 class="fs-medium">An error occured</h1>
+      <p>An unknown error occurred.</p>`
+      break;
+  }
+  hideLoader()
+}
+
+const getAdzan = async (location) => {
   const date = new Date().toLocaleDateString('en-CA')
-  const response = await fetch(`https://api.pray.zone/v2/times/day.json?city=${city}&date=${date}&timeformat=1`)
+  showLoader()
+  const response = await fetch(`https://api.pray.zone/v2/times/day.json?longitude=${location.longitude}&latitude=${location.latitude}&elevation=${location.elevation}&date=${date}`)
   const result = await response.json()
   const data = await result
   showAdzan(data.results)
+  hideLoader()
+}
+
+const getElevation = async (position) => {
+  let latitude = position.coords.latitude
+  let longitude = position.coords.longitude
+
+  const response = await fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${latitude},${longitude}`)
+  const result = await response.json()
+  const data = await result
+  getAdzan(data.results[0])
 }
 
 const showAdzan = (adzan) => {
@@ -70,7 +109,7 @@ const showAdzan = (adzan) => {
   document.body.style.overflowY = 'hidden'
   mainNav.innerHTML = `
   <li onclick="closePage()"><a href="#0" class="far fa-chevron-left text-white"></a></li>
-  <li class="logo"><i class="far fa-map-marker-alt"></i> ${adzan.location.city}, ${adzan.location.country_code}</li>
+  <li class="logo"><i class="far fa-map-marker-alt"></i> ${adzan.location.timezone}</li>
   `
   const adzanTimes = {
     shubuh: {
@@ -107,7 +146,7 @@ const showAdzan = (adzan) => {
   const isyaTime = adzanTimes.isya.time
   const dateObj = new Date()
   const localTime = `${dateObj.toLocaleString('it-IT', {hour: '2-digit', minute: '2-digit'})}`
-
+  
   if(localTime > shubuhTime && localTime < dhuhrTime) {
     elements.name.innerText = adzanTimes.dhuhr.name
     elements.timeIcon.classList.add(adzanTimes.dhuhr.icon)
@@ -132,8 +171,9 @@ const showAdzan = (adzan) => {
     elements.name.innerText = adzanTimes.shubuh.name
     elements.timeIcon.classList.add(adzanTimes.shubuh.icon)
     elements.time.innerText = shubuhTime
-    elements.date.innerText = dateObj.toLocaleString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
   }
+
+  elements.date.innerText = dateObj.toLocaleString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
 
   const timeListContainer = document.querySelector('.time-list')
   const adzanTimesArray = Object.values(adzanTimes)
