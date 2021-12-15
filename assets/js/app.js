@@ -54,7 +54,7 @@ const getLocation = async (city) => {
   const response = await fetch(`https://api.banghasan.com/sholat/format/json/kota/nama/${city}`)
   const result = await response.json()
   const data = await result
-  const locationId = parseInt(data.kota[0].id)
+  const locationId = data.kota[0].id
   getAdzan(locationId, city)
 }
 
