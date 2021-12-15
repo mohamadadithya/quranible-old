@@ -80,9 +80,8 @@ const getLatLongError = (error) => {
 }
 
 const getAdzan = async (location) => {
-  const date = new Date().toLocaleDateString('en-CA')
   showLoader()
-  const response = await fetch(`https://api.pray.zone/v2/times/day.json?longitude=${location.longitude}&latitude=${location.latitude}&elevation=${location.elevation}&date=${date}`)
+  const response = await fetch(`https://api.pray.zone/v2/times/today.json?longitude=${location.longitude}&latitude=${location.latitude}&elevation=${location.elevation}`)
   const result = await response.json()
   const data = await result
   showAdzan(data.results)
@@ -109,12 +108,12 @@ const showAdzan = (adzan) => {
   document.body.style.overflowY = 'hidden'
   mainNav.innerHTML = `
   <li onclick="closePage()"><a href="#0" class="far fa-chevron-left text-white"></a></li>
-  <li class="logo"><i class="far fa-map-marker-alt"></i> ${adzan.location.timezone}</li>
+  <li class="logo"><i class="far fa-map-marker-alt"></i> ${adzan.location.timezone}, ${adzan.location.country_code}</li>
   `
   const adzanTimes = {
     shubuh: {
       name: 'Shubuh',
-      time: adzan.datetime[0].times.Fajr,
+      time: adzan.datetime[0].times.Imsak,
       icon: 'fa-sunrise'
     },
     dhuhr: {
@@ -129,7 +128,7 @@ const showAdzan = (adzan) => {
     },
     maghrib: {
       name: 'Maghrib',
-      time: adzan.datetime[0].times.Maghrib,
+      time: adzan.datetime[0].times.Sunset,
       icon: 'fa-sunset'
     },
     isya: {
@@ -147,29 +146,29 @@ const showAdzan = (adzan) => {
   const dateObj = new Date()
   const localTime = `${dateObj.toLocaleString('it-IT', {hour: '2-digit', minute: '2-digit'})}`
   
-  if(localTime > shubuhTime && localTime < dhuhrTime) {
+  if(localTime >= shubuhTime && localTime <= dhuhrTime) {
     elements.name.innerText = adzanTimes.dhuhr.name
-    elements.timeIcon.classList.add(adzanTimes.dhuhr.icon)
+    elements.timeIcon.classList.replace('fa-none', adzanTimes.dhuhr.icon)
     elements.time.innerText = dhuhrTime
   }
-  if(localTime > dhuhrTime && localTime < asharTime) {
+  if(localTime >= dhuhrTime && localTime <= asharTime) {
     elements.name.innerText = adzanTimes.ashar.name
-    elements.timeIcon.classList.add(adzanTimes.ashar.icon)
+    elements.timeIcon.classList.replace('fa-none', adzanTimes.ashar.icon)
     elements.time.innerText = asharTime
   }
-  if(localTime > asharTime && localTime < maghribTime) {
+  if(localTime >= asharTime && localTime <= maghribTime) {
     elements.name.innerText = adzanTimes.maghrib.name
-    elements.timeIcon.classList.add(adzanTimes.maghrib.icon)
+    elements.timeIcon.classList.replace('fa-none', adzanTimes.maghrib.icon)
     elements.time.innerText = maghribTime
   }
-  if(localTime > maghribTime && localTime < isyaTime) {
+  if(localTime >= maghribTime && localTime <= isyaTime) {
     elements.name.innerText = adzanTimes.isya.name
-    elements.timeIcon.classList.add(adzanTimes.isya.icon)
+    elements.timeIcon.classList.replace('fa-none', adzanTimes.isya.icon)
     elements.time.innerText = isyaTime
   }
-  if(localTime > isyaTime || localTime < shubuhTime) {
+  if(localTime >= isyaTime || localTime <= shubuhTime) {
     elements.name.innerText = adzanTimes.shubuh.name
-    elements.timeIcon.classList.add(adzanTimes.shubuh.icon)
+    elements.timeIcon.classList.add('fa-none' ,adzanTimes.shubuh.icon)
     elements.time.innerText = shubuhTime
   }
 

@@ -267,6 +267,10 @@ body {
   margin-bottom: 2rem;
 }
 
+.adzan-page header .date {
+  font-size: .9rem;
+}
+
 .adzan-page header .name {
   font-size: 2rem;
   margin-bottom: 2rem;
