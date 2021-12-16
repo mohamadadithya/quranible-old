@@ -3,17 +3,19 @@ const mainNav = document.querySelector('.main-nav')
 const sidebar = document.querySelector('.sidebar')
 const surahsContainer = document.querySelector('.surahs .container')
 const dailyPrayerContainer = document.querySelector('.daily-prayer-page .container')
-const loader = document.querySelector('.loader')
-const surahPage = document.querySelector('.surah-page')
-const dailyPrayerPage = document.querySelector('.daily-prayer-page')
-const adzanPage = document.querySelector('.adzan-page')
-const timeListContainer = adzanPage.querySelector('.time-list')
+const timeListContainer = document.querySelector('.time-list')
 const versesContainer = document.querySelector('.verses')
+const asmaulHusnaContainer = document.querySelector('.asmaul-husna-page .container')
+const prayerIntentionsContainer = document.querySelector('.prayer-intentions-page .container')
 const audioEl = document.querySelector('.audio')
 const themeToggle = document.querySelector('.check-toggle')
 const footer = document.querySelector('footer')
 const offlineSection = document.querySelector('.offline')
 const sidebarLinks = sidebar.querySelectorAll('.link')
+const loader = document.querySelector('.loader')
+
+const pages = document.querySelectorAll('.page')
+const surahPage = pages[0]
 
 if('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
@@ -30,7 +32,7 @@ sidebarLinks.forEach((link, index) => {
     })
     if(index === 1) {
       link.addEventListener('click', async () => {
-        dailyPrayerPage.classList.add('active')
+        pages[index + 1].classList.add('active')
         showLoader()
         const response = await fetch('https://api.jsonbin.io/b/61b7de1662ed886f915faabc')
         const result = await response.json()
@@ -40,15 +42,67 @@ sidebarLinks.forEach((link, index) => {
       })
     } else if(index === 2) {
       link.addEventListener('click', async () => {
-        adzanPage.classList.add('active')
+        pages[index - 1].classList.add('active')
         showLoader()
         const response = await fetch('https://api.techniknews.net/ipgeo/')
         const result = await response.json()
         const location = await result
         getLocation(location.city)
       })
+    } else if(index === 3) {
+      link.addEventListener('click', async () => {
+        pages[index].classList.add('active')
+        showLoader()
+        const response = await fetch('https://api.jsonbin.io/b/61ba38d9229b23312cdc1055')
+        const result = await response.json()
+        const data = await result
+        showAsmaulHusna(data)
+        hideLoader()
+      })
+    } else if(index === 4) {
+      link.addEventListener('click', async () => {
+        pages[index].classList.add('active')
+        showLoader()
+        const response = await fetch('https://api.jsonbin.io/b/61ba8640229b23312cdc30b6')
+        const result = await response.json()
+        const data = await result
+        showPrayerIntentions(data)
+        hideLoader()
+      })
     }
 })
+
+const showAsmaulHusna = (asmaulNames) => {
+  document.body.style.overflowY = 'hidden'
+  mainNav.innerHTML = `
+  <li onclick="closePage()"><a href="#" class="far fa-chevron-left text-white"></a></li>
+  <li class="logo">Asmaul Husna</li>`
+
+  asmaulNames.forEach(asmaul => {
+    asmaulHusnaContainer.innerHTML += `<div class="primary-card shadow">
+    <h2 class="name">${asmaul.urutan}. ${asmaul.latin}</h2>
+    <p class="arab">${asmaul.arab}</p>
+    <p class="text-gray">${asmaul.arti}</p>
+  </div>`
+  })
+}
+
+const showPrayerIntentions = (prayerIntentions) => {
+  document.body.style.overflowY = 'hidden'
+  mainNav.innerHTML = `
+  <li onclick="closePage()"><a href="#" class="far fa-chevron-left text-white"></a></li>
+  <li class="logo">Niat-Niat Sholat</li>
+  `
+
+  prayerIntentions.forEach(intention => {
+    prayerIntentionsContainer.innerHTML += `<div class="primary-card shadow">
+    <h2 class="name">${intention.name}</h2>
+    <p class="arab">${intention.arab}</p>
+    <p class="latin">${intention.latin}</p>
+    <p class="means">${intention.means}</p>
+ </div>`
+  })
+}
 
 const getLocation = async (city) => {
   const response = await fetch(`https://api.banghasan.com/sholat/format/json/kota/nama/${city}`)
@@ -70,15 +124,15 @@ const getAdzan = async (locationId, city) => {
 
 const showAdzan = (adzan, city) => {
   const elements = {
-    location: adzanPage.querySelector('.location'),
-    name: adzanPage.querySelector('.name'),
-    time: adzanPage.querySelector('.time'),
-    timeIcon: adzanPage.querySelector('.time-icon'),
-    date: adzanPage.querySelector('.date')
+    location: document.querySelector('.adzan-page .location'),
+    name: document.querySelector('.adzan-page .name'),
+    time: document.querySelector('.adzan-page .time'),
+    timeIcon: document.querySelector('.adzan-page .time-icon'),
+    date: document.querySelector('.adzan-page .date')
   }
   document.body.style.overflowY = 'hidden'
   mainNav.innerHTML = `
-  <li onclick="closePage()"><a href="#0" class="far fa-chevron-left text-white"></a></li>
+  <li onclick="closePage()"><a href="#" class="far fa-chevron-left text-white"></a></li>
   <li class="logo">Waktu Sholat</li>
   `
   elements.location.innerHTML = `<i class="far fa-map-marker-alt"></i> ${city}`
@@ -164,11 +218,11 @@ const showAdzan = (adzan, city) => {
 const showDailyPrayer = (prayers) => {
   document.body.style.overflowY = 'hidden'
   mainNav.innerHTML = `
-  <li onclick="closePage()"><a href="#0" class="far fa-chevron-left text-white"></a></li>
+  <li onclick="closePage()"><a href="#" class="far fa-chevron-left text-white"></a></li>
   <li class="logo">Doa-Doa Harian</li>
   `
   prayers.forEach(prayer => {
-    dailyPrayerContainer.innerHTML += `<div class="card shadow">
+    dailyPrayerContainer.innerHTML += `<div class="primary-card shadow">
     <h2 class="name">${prayer.doa}</h2>
     <p class="arab">${prayer.ayat}</p>
     <p class="latin">${prayer.latin}</p>
@@ -246,7 +300,7 @@ const showSurah = (surahNumber) => {
 const getSurah = (surah) => {
   document.body.style.overflowY = 'hidden'
   mainNav.innerHTML = `
-         <li onclick="closePage()"><a href="#0" class="far fa-chevron-left text-white"></a></li>
+         <li onclick="closePage()"><a href="#" class="far fa-chevron-left text-white"></a></li>
          <li class="logo">${surah.name.transliteration.id}</li>
          <li class="far fa-play toggle" onclick="toggleAudios(this)" data-number="${surah.number}"></li>
          `
@@ -325,6 +379,8 @@ const closePage = () => {
     versesContainer.innerHTML = ''
     dailyPrayerContainer.innerHTML = ''
     timeListContainer.innerHTML = ''
+    asmaulHusnaContainer.innerHTML = ''
+    prayerIntentionsContainer.innerHTML = ''
   }, 500);
 }
 
