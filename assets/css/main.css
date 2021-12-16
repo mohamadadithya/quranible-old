@@ -65,6 +65,11 @@ body {
   transition: .3s all ease;
 }
 
+a,
+.toggle {
+  cursor: none;
+}
+
 .navigation {
   background-color: var(--accentColor);
   padding: 1rem 0;
@@ -147,7 +152,6 @@ body {
   -o-transition: .3s;
   transition: .3s;
   margin-bottom: 1rem;
-  cursor: none;
 }
 
 .surahs .surah:active {
@@ -307,11 +311,6 @@ body {
   margin-left: 10px;
 }
 
-.toggle,
-.fa-chevron-left {
-  cursor: pointer;
-}
-
 .loader {
   height: 100%;
   width: 100%;
@@ -408,12 +407,14 @@ body {
 
 /* Tablet or Higher View */
 @media (min-width: 768px) {
-  .navigation .sidebar {
-    width: 30%;
+
+  a,
+  .toggle {
+    cursor: pointer;
   }
 
-  .surahs .surah {
-    cursor: pointer;
+  .navigation .sidebar {
+    width: 30%;
   }
 
   .container.responsive {
