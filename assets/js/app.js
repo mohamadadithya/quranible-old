@@ -34,7 +34,7 @@ sidebarLinks.forEach((link, index) => {
       link.addEventListener('click', async () => {
         pages[index + 1].classList.add('active')
         showLoader()
-        const response = await fetch('https://api.jsonbin.io/b/61b7de1662ed886f915faabc')
+        const response = await fetch('https://api.npoint.io/31b52b3caae1b5c00c17')
         const result = await response.json()
         const data = await result
         showDailyPrayer(data)
@@ -53,7 +53,7 @@ sidebarLinks.forEach((link, index) => {
       link.addEventListener('click', async () => {
         pages[index].classList.add('active')
         showLoader()
-        const response = await fetch('https://api.jsonbin.io/b/61ba38d9229b23312cdc1055')
+        const response = await fetch('https://api.npoint.io/7c853c9f8335e6e948dd')
         const result = await response.json()
         const data = await result
         showAsmaulHusna(data)
@@ -63,7 +63,7 @@ sidebarLinks.forEach((link, index) => {
       link.addEventListener('click', async () => {
         pages[index].classList.add('active')
         showLoader()
-        const response = await fetch('https://api.jsonbin.io/b/61ba8640229b23312cdc30b6')
+        const response = await fetch('https://api.npoint.io/ab0d08dc6a3ca914b0fe')
         const result = await response.json()
         const data = await result
         showPrayerIntentions(data)
@@ -263,7 +263,7 @@ if(currentTheme) {
 }
 
 const getSurahs = async () => {
-  const response = await fetch(`https://api.quran.sutanlab.id/surah/`)
+  const response = await fetch(`https://api.quran.gading.dev/surah`)
   showLoader()
   const result = await response.json()
   const surahs = await result.data
@@ -288,7 +288,7 @@ const showSurahs = (surah) => {
 const showSurah = (surahNumber) => {
   sidebar.classList.remove('active')
   showLoader()
-  fetch(`https://api.quran.sutanlab.id/surah/${surahNumber}`)
+  fetch(`https://api.quran.gading.dev/surah/${surahNumber}`)
     .then(res => res.json())
     .then(res => {
       getSurah(res.data)
